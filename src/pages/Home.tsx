@@ -14,13 +14,17 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log("here");
       const result = await axios.get(
-        `https://gavs.url.co.uk/api/search?=${searchTerm}`
+        `https://linode.ghazlawl.com/ark/mods/auctionhouse/api/json/v1/auctions/`
       );
-      setItems(result.data);
+      setItems(
+        result.data.Auctions.map((item: any) => item.AuctionType === "Item")
+      );
     };
+    console.log("fetching data");
     fetchData();
-  }, [searchTerm]);
+  }, []);
 
   return (
     <div className="Home">
@@ -42,9 +46,13 @@ const Home: React.FC = () => {
         <>
           {items.map((item: any) => {
             return (
-              <Row>
-                <Col>{item.id}</Col>
-                <Col>{item.name}</Col>
+              <Row key={item.date}>
+                <Col>{item.Date ?? ""}</Col>
+                <Col>{item.AskingAmount ?? ""}</Col>
+                <Col>{item.AskingClass ?? ""}</Col>
+                <Col>{item.Name ?? ""}</Col>
+                <Col>{item.Item?.Quality ?? ""}</Col>
+                <Col>{item.Item?.Stats?.Damage ?? ""}</Col>
               </Row>
             );
           })}
